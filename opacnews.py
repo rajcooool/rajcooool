@@ -49,8 +49,10 @@ def read_news(db_path, kat, limit):
     """Read news items from the database filtered by category."""
     with sqlite3.connect(db_path) as conn:
         conn.text_factory = str
+        conn.row_factory = sqlite3.Row
         cursor = conn.execute(
-            "SELECT * FROM news WHERE kat = ? LIMIT ?", (kat, limit)
+            "SELECT link, title, image FROM news WHERE kat = ? LIMIT ?",
+            (kat, limit),
         )
         return cursor.fetchall()
 
@@ -59,9 +61,9 @@ def render_html(items):
     """Render news items as HTML divs, each wrapped in a link."""
     parts = []
     for item in items:
-        link = str(item[1])
-        title = str(item[2])
-        image = str(item[5])
+        link = item["link"]
+        title = item["title"]
+        image = item["image"]
         content = title + "\n" + image + "<br>\n"
         if link:
             content = '<a href="' + link + '">' + content + '</a>'
