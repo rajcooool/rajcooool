@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Scrape news articles from stadtbibliothek-chemnitz.de and store them in a SQLite database."""
-from __future__ import annotations
 
 import argparse
 import logging
@@ -10,7 +9,7 @@ import sqlite3
 import sys
 from urllib.parse import urljoin
 
-from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup
 import requests
 
 BASE_URL = "https://www.stadtbibliothek-chemnitz.de"
@@ -58,14 +57,14 @@ def parse_args():
     return parser.parse_args()
 
 
-def make_absolute(url: str) -> str:
+def make_absolute(url):
     """Convert a relative URL to an absolute one using BASE_URL."""
     if url.startswith("http"):
         return url
     return urljoin(BASE_URL, url)
 
 
-def extract_image(element: Tag) -> str:
+def extract_image(element):
     """Extract a thumbnail image tag from a news block element."""
     img_tag = element.find("img")
     if img_tag and img_tag.get("data-img-uri"):
@@ -85,7 +84,7 @@ def extract_image(element: Tag) -> str:
     return ""
 
 
-def extract_link(element: Tag) -> str:
+def extract_link(element):
     """Extract the 'mehr' link from a news block and make it absolute."""
     link_div = element.find("div", class_="cc_links")
     if link_div:
@@ -96,14 +95,14 @@ def extract_link(element: Tag) -> str:
     return ""
 
 
-def fetch_page(url: str, proxies: dict) -> str:
+def fetch_page(url, proxies):
     """Fetch a page and return its HTML content."""
     response = requests.get(url, proxies=proxies, timeout=REQUEST_TIMEOUT)
     response.raise_for_status()
     return response.text
 
 
-def scrape_news(html: str, limit: int) -> list[dict]:
+def scrape_news(html, limit):
     """Parse news blocks from HTML and return a list of extracted items."""
     soup = BeautifulSoup(html, "lxml")
     items = []
@@ -125,7 +124,7 @@ def scrape_news(html: str, limit: int) -> list[dict]:
     return items
 
 
-def print_news(items: list[dict]):
+def print_news(items):
     """Print scraped news items to stdout."""
     for i, item in enumerate(items, start=1):
         print(f"--- Item {i} ---")
@@ -136,7 +135,7 @@ def print_news(items: list[dict]):
         print()
 
 
-def store_news(db_path: str, items: list[dict]):
+def store_news(db_path, items):
     """Write scraped news items into the SQLite database."""
     with sqlite3.connect(db_path) as conn:
         conn.text_factory = str
