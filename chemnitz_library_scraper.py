@@ -85,13 +85,12 @@ def extract_image(element):
 
 
 def extract_link(element):
-    """Extract the 'mehr' link from a news block and make it absolute."""
+    """Extract the article URL from a news block and make it absolute."""
     link_div = element.find("div", class_="cc_links")
     if link_div:
         a_tag = link_div.find("a")
-        if a_tag:
-            a_tag["href"] = make_absolute(a_tag.get("href", ""))
-            return str(a_tag)
+        if a_tag and a_tag.get("href"):
+            return make_absolute(a_tag["href"])
     return ""
 
 

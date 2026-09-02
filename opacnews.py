@@ -56,16 +56,16 @@ def read_news(db_path, kat, limit):
 
 
 def render_html(items):
-    """Render news items as HTML divs."""
+    """Render news items as HTML divs, each wrapped in a link."""
     parts = []
     for item in items:
-        parts.append(
-            '<div id="column" align="center">'
-            + str(item[2]) + "\n"
-            + str(item[5]) + "<br>\n"
-            + str(item[1]) + "\n"
-            + "</div>"
-        )
+        link = str(item[1])
+        title = str(item[2])
+        image = str(item[5])
+        content = title + "\n" + image + "<br>\n"
+        if link:
+            content = '<a href="' + link + '">' + content + '</a>'
+        parts.append('<div id="column" align="center">' + content + "</div>")
     return "\n".join(parts)
 
 
