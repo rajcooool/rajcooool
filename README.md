@@ -22,6 +22,7 @@ python chemnitz_library_scraper.py
 | `--proxy` | `SCRAPER_PROXY` | `http://proxy:3128` | HTTP(S)-Proxy (leerer String deaktiviert) |
 | `--limit` | `SCRAPER_LIMIT` | `5` | Max. Anzahl News-Einträge |
 | `--url` | `SCRAPER_URL` | `https://www.stadtbibliothek-chemnitz.de/` | URL zum Scrapen |
+| `--dry-run` / `-n` | – | aus | Testmodus: Ausgabe auf stdout statt in die Datenbank |
 | `--verbose` / `-v` | – | aus | Debug-Logging aktivieren |
 
 ### Beispiele
@@ -34,6 +35,9 @@ python chemnitz_library_scraper.py --proxy "" --db ./news.sqlite
 export SCRAPER_DB_PATH=./news.sqlite
 export SCRAPER_PROXY=""
 python chemnitz_library_scraper.py
+
+# Testmodus: nur auf stdout ausgeben, keine DB nötig
+python chemnitz_library_scraper.py --dry-run --proxy ""
 
 # Mehr Einträge mit Debug-Ausgabe
 python chemnitz_library_scraper.py --limit 10 -v

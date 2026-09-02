@@ -47,6 +47,10 @@ def parse_args():
         help="URL to scrape (env: SCRAPER_URL)",
     )
     parser.add_argument(
+        "--dry-run", "-n", action="store_true",
+        help="Test mode: print results to stdout instead of writing to the database",
+    )
+    parser.add_argument(
         "--verbose", "-v", action="store_true",
         help="Enable debug logging",
     )
@@ -120,6 +124,17 @@ def scrape_news(html: str, limit: int) -> list[dict]:
     return items
 
 
+def print_news(items: list[dict]):
+    """Print scraped news items to stdout."""
+    for i, item in enumerate(items, start=1):
+        print(f"--- Item {i} ---")
+        print(f"Title: {item['title']}")
+        print(f"Date:  {item['date']}")
+        print(f"Link:  {item['link']}")
+        print(f"Image: {item['image']}")
+        print()
+
+
 def store_news(db_path: str, items: list[dict]):
     """Write scraped news items into the SQLite database."""
     with sqlite3.connect(db_path) as conn:
@@ -149,10 +164,10 @@ def main():
     items = scrape_news(html, args.limit)
     log.info("Extracted %d news items", len(items))
 
-    for item in items:
-        log.debug("Title: %s | Date: %s", item["title"], item["date"])
-
-    store_news(args.db, items)
+    if args.dry_run:
+        print_news(items)
+    else:
+        store_news(args.db, items)
 
 
 if __name__ == "__main__":
