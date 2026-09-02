@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Scrape news articles from stadtbibliothek-chemnitz.de and store them in a SQLite database."""
+from __future__ import annotations
 
 import argparse
 import logging
