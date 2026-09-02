@@ -69,7 +69,7 @@ def render_news_item(item):
     image = item["image"].replace("&w=200", "&w=150")
     content = title + "\n" + image + "<br>\n"
     if link:
-        content = '<a href="' + link + '">' + content + '</a>'
+        content = '<a href="' + link + '">' + content + 'mehr</a>'
     return '<div id="column" align="center">' + content + "</div>"
 
 

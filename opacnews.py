@@ -66,7 +66,7 @@ def render_html(items):
         image = item["image"]
         content = title + "\n" + image + "<br>\n"
         if link:
-            content = '<a href="' + link + '">' + content + '</a>'
+            content = '<a href="' + link + '">' + content + 'mehr</a>'
         parts.append('<div id="column" align="center">' + content + "</div>")
     return "\n".join(parts)
 
